@@ -186,15 +186,16 @@ jobs:
           command: |
             cd /tmp/workspace/installers
             time=`date +"%d_%m_%y-%H:%M"`
-            cent="VAPOR3-3.4.0-CentOS7-Weekly.sh"
-            mv $cent ${cent/Weekly/$time}
+            osx="VAPOR3-3.4.0-Darwin-Weekly.dmg"
+            mv $osx ${osx/Weekly/$time}
             brew install ghr
             endl=$'\n'
             e="sha 256"$endl
-            g="CentOS:    "
-            sha=`shasum -a 256 VAPOR3*CentOS7*`
             g=$g$sha$endl
-            message="$g"
+            h="OSX:       "
+            sha=`shasum -a 256 VAPOR3*Darwin*`
+            h=$h$sha$endl
+            message="$e$f$g$h"
             echo $message > "/tmp/workspace/installers/sha256_for_"${time}
             ghr -b "Installers are timestamped with the unix command date + \"%d_%m_%y-%H:%M\"" -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -prerelease -c ${CIRCLE_SHA1} -replace 3.4_PreRelease /tmp/workspace/installers
 
@@ -202,7 +203,7 @@ jobs:
 workflows:
   installers:
     jobs:
-      - build_centos7_installer
+      - build_osx_installer
       - release_preInstallers:
           requires:
-            - build_centos7_installer
+            - build_osx_installer
