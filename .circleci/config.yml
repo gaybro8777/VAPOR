@@ -12,46 +12,45 @@ references:
 
 jobs:
   build_win10_installer:
-    executor:
-      name: win/default
-      shell: bash.exe
+    executor: win/default
     steps:
       - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            choco install visualstudio2019-workload-vctools -y
+            choco install python -y
+            choco install git -y
+            choco install cmake -y
+            choco install nsis -y
+            python -m pip install gdown
+            setx /M PATH "%PATH%;C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin"
+            msbuild -version
+            pwd
+            ls
+            python .circleci/downloadWin3rdParty.py
+      - run:
+          name: dos2unix
+          command: |
+            dos2unix /c/Users/circleci/project/share/shaders/*
+            dos2unix /c/Users/circleci/project/share/shaders/main
+            dos2unix /c/Users/circleci/project/share/shaders/includes
+          shell: bash.exe
+      - run:
+          name: Build Vapor
+          command: |
+            Copy-Item site_files\* -Destination .
+            mkdir build
+            cd build
+            git checkout $CIRCLE_BRANCH
+            & 'C:\\Program Files\\CMake\\bin\\cmake.exe' -S C:\Users\circleci\project -B C:\Users\circleci\project\build -DDIST_INSTALLER:string=ON -DCMAKE_BUILD_TYPE:STRING=Release -G 'Visual Studio 16 2019' -A x64
+            msbuild C:\Users\circleci\project\build\PACKAGE.vcxproj /p:Configuration=Release /p:Platform=x64
+            mkdir -p C:\Users\circleci\project\tmp\installers
+            Copy-Item C:\Users\circleci\project\build\*.exe -Destination C:\Users\circleci\project\tmp\installers
+          no_output_timeout: 45m
 
-#      - run:
-#          name: Install dependencies
-#          command: |
-#            #choco install visualcpp-build-tools -version 14.0.25420.1 -y
-#            choco install visualstudio2019-workload-vctools -y
-#            choco install python -y
-#            choco install git -y
-#            choco install cmake -y
-#            choco install nsis -y
-#            python -m pip install gdown
-#            #setx /M PATH "%PATH%;C:\Program Files (x86)\MSBuild\14.0\bin" 
-#            setx /M PATH "%PATH%;C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin" 
-#            msbuild -version
-#            pwd
-#            ls
-#            python .circleci/downloadWin3rdParty.py
-#      - run:
-#          name: Build Vapor
-#          command: |
-#            Copy-Item site_files\* -Destination .
-#            git pull
-#            git checkout $CIRCLE_BRANCH
-#            mkdir build
-#            cd build
-#            & 'C:\\Program Files\\CMake\\bin\\cmake.exe' -S C:\Users\circleci\project -B C:\Users\circleci\project\build -DCMAKE_BUILD_TYPE:STRING=Release -G 'Visual Studio 16 2019' -A x64
-#            msbuild C:\Users\circleci\project\build\PACKAGE.vcxproj /p:Configuration=Release /p:Platform=x64
-#            mkdir -p C:\Users\circleci\project\tmp\workspace\installers
-#            Copy-Item C:\Users\circleci\project\build\*.exe -Destination C:\Users\circleci\project\tmp\workspace\installers\VAPOR3-3.2.0-win64-Weekly.exe
-#          no_output_timeout: 45m
-#
-#      - persist_to_workspace:
-#          root: *workspace_root
-#          paths: 
-#            - installers
+      - store_artifacts:
+          path: /tmp/installers
 
 workflows:
   build:
