@@ -92,54 +92,57 @@ def main():
     layer = 'VIIRS_CityLights_2012'
     #layer = 'GOES-West_ABI_Band2_Red_Visible_1km'
 
-    tiffFile = "/Users/pearse/night6.tif"
-
-    north = 60
-    south = 15
-    east = -60
-    west = -140
+    west = -170 
+    north = 60 
+    east = -10 
+    south = 15   
 
     width = 1920
     height = 1080
-    #width = 3840
-    #height = 2160
 
-    #dpi = 96
     dpi = 100 
     fig = plt.figure( figsize=(width/dpi, height/dpi), tight_layout=True )
-    print( fig.dpi )
     ax = fig.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
     ax.add_wmts(url, layer)
     ax.set_extent([west, east, south, north], crs=ccrs.PlateCarree())
     ax.coastlines(resolution='50m', color='yellow')
 
+    tiffFile = "/Users/pearse/night6.tif"
     fig.savefig( tiffFile,
                  bbox_inches='tight',
                  pad_inches=0 )
 
-    #platteCarree = "+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84"
-    platteCarree = "+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +units=m"
-    #platteCarree = "+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=" + str(west) + " +y_0=" + str(north) + " +ellps=WGS84 +units=m"
-    #platteCarree = "+proj=longlat +datum=WGS84 +no_defs"
+    platteCarree = "+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84"
 
-    #tiff    = gdal.Open("/Users/pearse/night5.tiff")
     tiff    = gdal.OpenShared( tiffFile, gdal.GA_Update)
-    #geotiff = "/Users/pearse/night5geo.tiff"
     width   = tiff.RasterXSize
     height  = tiff.RasterYSize
-    print( str(width) + " " + str(height) )
-   
-    north = 1689200.13960789
-    south = 8399737.88981836
-    east  = -6679169.44759641
-    west  = -15584728.7110583
+  
+    nightTranslated = '/Users/pearse/nightTranslated.tif'
+    nightWarped     = '/Users/pearse/nightWarped.tif'
+
+    gdal.Translate( srcDS=tiffFile, 
+                    destName=nightTranslated,
+                    format = 'GTiff', 
+                    outputBounds = [ west, north, east, south ],
+                    outputSRS = 'EPSG:4326'
+    )
+
+    warpOpts = gdal.WarpOptions(
+        srcSRS='EPSG:4326',
+        dstSRS='EPSG:32662'
+    )
+    gdal.Warp(  destNameOrDestDS=nightWarped, 
+                srcDSOrSrcDSTab=nightTranslated, 
+                srcSRS = 'EPSG:4326',
+                dstSRS='EPSG:32662' )
+    #            options=warpOpts )
      
-    ewPixelRes = ( east  - west  ) / width
+    '''ewPixelRes = ( east  - west  ) / width
     snPixelRes = ( south - north ) / height
     print( str(ewPixelRes) + " " + str(snPixelRes) )
-    tiff.SetGeoTransform( [ west, ewPixelRes, 0, north, snPixelRes, 0 ] )
+    tiff.SetGeoTransform( [ west, ewPixelRes, 0, north, -snPixelRes, 0 ] )'''
     
-    #tiff.SetGeoTransform( [ west , ewPixelRes, 0, south, -snPixelRes, 0 ] )
     '''dataset.SetGeoTransform((
         x_min,    # 0
         PIXEL_SIZE,  # 1
@@ -147,11 +150,7 @@ def main():
         y_max,    # 3
         0,                      # 4
         -PIXEL_SIZE))  '''
-    tiff.SetProjection( platteCarree )
-    #driver = gdal.GetDriverByName('GTiff')
-    #driver.CreateCopy( geotiff, tiff, 0 )
-    #geotiff = gdal.Open( geotiff )
-    #geotiff.SetGeoTransform( [ west, ewPixelRes, 0, north, snPixelRes, 0 ] )
+    #tiff.SetProjection( platteCarree )
 
 if __name__ == '__main__':
     main()
