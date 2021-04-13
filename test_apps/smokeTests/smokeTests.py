@@ -108,7 +108,7 @@ def testGrid( grid ):
 
     print( "Testing " + grid + " grid" )
 
-    print( gridProgram + " -dims " + grid )
+    print( "  Command: " + gridProgram + " -dims " + grid )
     #programOutput  = subprocess.check_output( [ gridProgram, " -dims ", grid ] )
     #programOutput  = subprocess.run( [ gridProgram, " -dims ", grid ], encoding="utf-8" )
     programOutput  = subprocess.run( 
@@ -133,8 +133,8 @@ def testGrid( grid ):
 
 def testDataMgr( dataMgrType, dataMgr, makeBaseline=False ):
     print( "Testing " + dataMgrType + " with " + dataMgr )
-    
     command = [ dataMgrProgram, "-fileType", dataMgrType, dataMgr ]
+    print( "  Command: " + " ".join(command)#dataMgrProgram + " -fileType " + dataMgrType + " " + dataMgr ) 
     programOutput = subprocess.check_output( command )
     
     if ( makeBaseline ):
