@@ -1,5 +1,8 @@
 #pragma once
 
+#include <QDialog>
+#include "Updateable.h"
+
 #include <vapor/ImageRenderer.h>
 #include <RenderEventRouterGUI.h>
 
@@ -7,6 +10,19 @@
 //! \ingroup Public_GUI
 //! \brief Image Renderer GUI
 //! \author Stas Jaroszynski
+
+class PGroup;
+
+/*class NewImageDialog : public QDialog, public Updateable {
+    Q_OBJECT
+
+public:
+    NewImageDialog(QWidget *parent);
+    virtual void Update(VAPoR::ParamsBase *p, VAPoR::ParamsMgr *paramsMgr = nullptr, VAPoR::DataMgr *dataMgr = nullptr) override;
+
+private:
+    //PGroup* _settings;
+};*/
 
 class ImageEventRouter : public RenderEventRouterGUI {
 public:
@@ -20,4 +36,7 @@ protected:
     string _getDescription() const;
     string _getSmallIconImagePath() const { return "Image_small.png"; }
     string _getIconImagePath() const { return "Image.png"; }
+
+//private:
+    //NewImageDialog* _newImageDialog;
 };

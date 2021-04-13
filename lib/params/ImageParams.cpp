@@ -10,6 +10,16 @@ const std::string ImageParams::_opacityTag = "Opacity";
 const std::string ImageParams::_orientationTag = "Orientation";
 const std::string ImageParams::_TMSLODTag = "TMSLevelOfDetail";
 const std::string ImageParams::_numTMSLODTag = "numTMSLevelOfDetail";
+const std::string ImageParams::_tiffCreateWest  = "West";
+const std::string ImageParams::_tiffCreateNorth = "North";
+const std::string ImageParams::_tiffCreateEast  = "East";
+const std::string ImageParams::_tiffCreateSouth = "South";
+const std::string ImageParams::_tiffCreateWidth  = "Width";
+const std::string ImageParams::_tiffCreateHeight = "Height";
+const std::string ImageParams::_tiffCreateURL    = "URL";
+const std::string ImageParams::_tiffCreateLayer  = "Layer";
+const std::string ImageParams::_tiffCreateFileName  = "FileName";
+const std::string ImageParams::_tiffIncludeCoastline = "Coastline";
 
 //
 // Register class with object factory
@@ -43,6 +53,15 @@ int ImageParams::Initialize()
     SetImagePath(Wasp::GetSharePath("images/NaturalEarth.tms"));
     SetIsGeoRef(true);
     SetIgnoreTransparency(false);
+
+    //SetValueString( _tiffCreateFileName, "Custom geotiff path", Wasp::GetSharePath("images/customGeoTiff.tif") );
+    SetValueLong( _tiffIncludeCoastline, "Include coastline in custom geotiff", 0 );
+    SetValueLong( _tiffCreateWidth, "Custom geotiff width", 1920) ;
+    SetValueLong( _tiffCreateHeight, "Custom geotiff height", 1080 );
+    SetValueDouble( _tiffCreateWest, "", -120.0 );
+    SetValueDouble( _tiffCreateNorth, "", 30.0 );
+    SetValueDouble( _tiffCreateEast, "", 120.0 );
+    SetValueDouble( _tiffCreateSouth, "", -30.0 );
 
     return (0);
 }

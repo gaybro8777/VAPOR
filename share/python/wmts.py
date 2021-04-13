@@ -20,73 +20,6 @@ import cartopy.crs as ccrs
 import PIL
 from osgeo import gdal
 
-def array_to_raster(array):
-    """Array > Raster
-    Save a raster from a C order array.
-
-    :param array: ndarray
-    """
-    dst_filename = '/a_file/name.tiff'
-
-
-    # You need to get those values like you did.
-    x_pixels = 16  # number of pixels in x
-    y_pixels = 16  # number of pixels in y
-    PIXEL_SIZE = 3  # size of the pixel...        
-    x_min = 553648  
-    y_max = 7784555  # x_min & y_max are like the "top left" corner.
-    wkt_projection = 'a projection in wkt that you got from other file'
-
-    driver = gdal.GetDriverByName('GTiff')
-
-    dataset = driver.Create(
-        dst_filename,
-        x_pixels,
-        y_pixels,
-        1,
-        gdal.GDT_Float32, )
-
-    dataset.SetGeoTransform((
-        x_min,    # 0
-        PIXEL_SIZE,  # 1
-        0,                      # 2
-        y_max,    # 3
-        0,                      # 4
-        -PIXEL_SIZE))  
-
-    dataset.SetProjection(wkt_projection)
-    dataset.GetRasterBand(1).WriteArray(array)
-    dataset.FlushCache()  # Write to disk.
-    return dataset, dataset.GetRasterBand(1)  #If you need to return, remenber to return  also the dataset because the band don`t live without dataset.
-
-#https://stackoverflow.com/questions/60282305/how-i-can-read-corner-coordinates-in-degrees
-def degreesToMeters( ulx, uly, lrx, lry ):
-#def main():
-    #wkt_srs = ds.GetProjection()
-    wkt_srs = cartopy.crs.PlateCarree()
-    gt = ds.GetGeoTransform()
-    xs = ds.RasterXSize
-    ys = ds.RasterYSize
-
-    ulx, uly = gdal.ApplyGeoTransform(gt, 0, 0)
-    lrx, lry = gdal.ApplyGeoTransform(gt, xs, ys)
-
-    tar_srs = gdal.osr.SpatialReference()
-    tar_srs.ImportFromWkt(wkt_srs)
-
-    src_srs = gdal.osr.SpatialReference()
-    src_srs.ImportFromEPSG(4326)
-
-    # with recent versions of GDAL the axis order (x,y vs y,x) depends
-    # on the projection. Force "x,y" with:
-    src_srs.SetAxisMappingStrategy(gdal.osr.OAMS_TRADITIONAL_GIS_ORDER)
-    tar_srs.SetAxisMappingStrategy(gdal.osr.OAMS_TRADITIONAL_GIS_ORDER)
-
-    ct = gdal.osr.CoordinateTransformation(src_srs, tar_srs)
-
-    ulx_deg, uly_deg = ct.TransformPoint(ulx, uly)
-    lrx_deg, lry_deg = ct.TransformPoint(lrx, lry)
-
 def main():
     url = 'https://map1c.vis.earthdata.nasa.gov/wmts-geo/wmts.cgi'
     layer = 'VIIRS_CityLights_2012'
@@ -136,21 +69,6 @@ def main():
                 srcDSOrSrcDSTab=nightTranslated, 
                 srcSRS = 'EPSG:4326',
                 dstSRS='EPSG:32662' )
-    #            options=warpOpts )
-     
-    '''ewPixelRes = ( east  - west  ) / width
-    snPixelRes = ( south - north ) / height
-    print( str(ewPixelRes) + " " + str(snPixelRes) )
-    tiff.SetGeoTransform( [ west, ewPixelRes, 0, north, -snPixelRes, 0 ] )'''
-    
-    '''dataset.SetGeoTransform((
-        x_min,    # 0
-        PIXEL_SIZE,  # 1
-        0,                      # 2
-        y_max,    # 3
-        0,                      # 4
-        -PIXEL_SIZE))  '''
-    #tiff.SetProjection( platteCarree )
 
 if __name__ == '__main__':
     main()

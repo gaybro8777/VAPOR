@@ -101,6 +101,16 @@ public:
     static const std::string _orientationTag;    // If it's X-Y (orientation = 2)
                                                  // If it's X-Z (orientation = 1)
                                                  // If it's Y-Z (orientation = 0)
+    static const std::string _tiffCreateWest;
+    static const std::string _tiffCreateEast;
+    static const std::string _tiffCreateNorth;
+    static const std::string _tiffCreateSouth;
+    static const std::string _tiffCreateWidth;
+    static const std::string _tiffCreateHeight;
+    static const std::string _tiffCreateURL;
+    static const std::string _tiffCreateLayer;
+    static const std::string _tiffCreateFileName;
+    static const std::string _tiffIncludeCoastline;
 
 private:
     bool _initialized = false;
