@@ -134,7 +134,7 @@ def testGrid( grid ):
 def testDataMgr( dataMgrType, dataMgr, makeBaseline=False ):
     print( "Testing " + dataMgrType + " with " + dataMgr )
     command = [ dataMgrProgram, "-fileType", dataMgrType, dataMgr ]
-    print( "  Command: " + " ".join(command)#dataMgrProgram + " -fileType " + dataMgrType + " " + dataMgr ) 
+    print( "  Command: " + " ".join(command))#dataMgrProgram + " -fileType " + dataMgrType + " " + dataMgr ) 
     programOutput = subprocess.check_output( command )
     
     if ( makeBaseline ):
