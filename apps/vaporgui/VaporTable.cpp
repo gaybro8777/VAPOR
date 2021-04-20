@@ -45,6 +45,10 @@ VaporTable::VaporTable(QTableWidget *table, bool lastRowIsCheckboxes, bool lastC
     SetVerticalHeaderWidth(100);
 
     connect(_table, &QTableWidget::cellClicked, this, &VaporTable::emitCellClicked);
+    connect(_table, &QTableWidget::cellChanged, this, &VaporTable::printCurrentValue);
+    connect(_table, &QTableWidget::cellChanged, this, &VaporTable::emitValueChanged);
+
+    //_table->installEventFilter( this );
 }
 
 // Clear current table, then generate table of rows x columns
@@ -68,6 +72,7 @@ void VaporTable::Update(int rows, int cols, std::vector<double> values, std::vec
 
 void VaporTable::Update(int rows, int cols, std::vector<std::string> values, std::vector<std::string> rowHeaders, std::vector<std::string> colHeaders)
 {
+    _table->blockSignals(true);
     _table->clearContents();
     _table->setRowCount(rows);
     _table->setColumnCount(cols);
@@ -88,6 +93,7 @@ void VaporTable::Update(int rows, int cols, std::vector<std::string> values, std
     resizeTableHeight();
 
     if (_mutabilityFlags & IMMUTABLE) { _correctImmutableCellText(); }
+    _table->blockSignals(false);
 }
 
 void VaporTable::SetVerticalHeaderWidth(int width) { _table->verticalHeader()->setMaximumWidth(width); }
@@ -247,16 +253,16 @@ void VaporTable::addCheckbox(int row, int column, bool checked)
     connect(checkBox, SIGNAL(stateChanged(int)), this, SLOT(emitValueChanged()));
 }
 
-void VaporTable::emitValueChanged()
+void VaporTable::emitValueChanged(int row, int col)
 {
-    int        row, col;
+    //int        row, col;
     QCheckBox *item = qobject_cast<QCheckBox *>(QObject::sender());
     if (item != nullptr) {
         row = item->property("row").toInt();
         col = item->property("col").toInt();
-    } else {
-        return;
-    }
+    } //else {
+    //    return;
+    //}
 
     _activeRow = row;
     if (_highlightFlags & ROWS) highlightActiveRow(_activeRow);
@@ -264,7 +270,7 @@ void VaporTable::emitValueChanged()
     emit valueChanged(row, col);
 }
 
-void VaporTable::emitReturnPressed() { emit returnPressed(); }
+void VaporTable::emitReturnPressed() { std::cout << "FOO" << std::endl; emit returnPressed(); }
 
 void VaporTable::emitCellClicked(int row, int col)
 {
@@ -489,3 +495,43 @@ void VaporTable::highlightActiveRow(int row)
 int VaporTable::GetActiveRow() const { return _activeRow; }
 
 void VaporTable::SetActiveRow(int row) { _activeRow = row; }
+
+void VaporTable::printCurrentValue(int row, int col) {
+    std::cout << "printCurrentValue()" << std::endl;
+    std::cout << _table->item(row,col)->text().toStdString() << std::endl;
+    emit emitReturnPressed();
+}
+
+//bool VaporTable::event( QEvent* event ) {
+/*void VaporTable::keyPressEvent( QKeyEvent* event ) {
+    std::cout << "Foo" << std::endl;
+    if (event->type() == QEvent::KeyPress) {
+        auto key = static_cast<QKeyEvent*>(event)->key();
+        if (key == Qt::Key_Return || key == Qt::Key_Enter ) {
+            //return true;
+            emit returnPressed();
+        }
+    }
+    QTableWidget::keyPressEvent( event );
+    //return QWidget::event(event);
+    //return QTableWidget::event(event);
+}*/
+
+/*void VaporTable::mousePressEvent ( QMouseEvent * event ){
+    printf("\nMouse in board");
+    setFocus();
+}*/
+
+//bool ReturnPressWatcher::eventFilter(QObject* obj, QEvent* event) {
+bool VaporTable::eventFilter(QObject* obj, QEvent* event) {
+    return QObject::eventFilter(obj, event);
+    if (event->type() == QEvent::KeyPress) {
+        auto key = static_cast<QKeyEvent*>(event)->key();
+        if (key == Qt::Key_Return || key == Qt::Key_Enter ) {
+            
+            emit emitReturnPressed();
+            //return true;
+        }
+    }
+    return QObject::eventFilter(obj, event);
+}

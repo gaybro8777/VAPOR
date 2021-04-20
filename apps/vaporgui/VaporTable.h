@@ -81,10 +81,18 @@ public:
 
     void SetVerticalHeaderWidth(int width);
 
+    //bool event(QEvent* event) override;
+
+protected:
+    bool eventFilter(QObject* obj, QEvent* event) override;
+    //void keyPressEvent(QKeyEvent* event);
+    //void mousePressEvent( QMouseEvent* event) override;
+
 public slots:
     void emitCellClicked(int, int);
-    void emitValueChanged();
+    void emitValueChanged(int row=0, int col=0);
     void emitReturnPressed();
+    void printCurrentValue(int row, int col);
 
 signals:
 
@@ -149,5 +157,12 @@ struct Value {
             throw std::runtime_error("conversion failed");
     }
 };
+
+/*class ReturnPressWatcher : public QObject {
+    Q_OBJECT
+    
+protected:
+    bool eventFilter(QObject* obj, QEvent* event) override;
+};*/
 
 #endif

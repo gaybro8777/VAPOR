@@ -507,13 +507,17 @@ void AnnotationEventRouter::updateAxisAnnotations()
 
 void AnnotationEventRouter::axisAnnotationTableChanged()
 {
+std::cout << "void AnnotationEventRouter::axisAnnotationTableChanged()" << std::endl;
     AxisAnnotation *aa = _getCurrentAxisAnnotation();
     bool            annotateLatLon = aa->GetLatLonAxesEnabled();
 
     ParamsMgr *paramsMgr = _controlExec->GetParamsMgr();
     paramsMgr->BeginSaveStateGroup("Annotation table changed");
     std::vector<double> numTics = getTableRow(0);
-    for (int i = 0; i < numTics.size(); i++) { numTics[i] = round(numTics[i]); }
+    for (int i = 0; i < numTics.size(); i++) { 
+        numTics[i] = round(numTics[i]); 
+        std::cout << numTics[i] << std::endl;
+    }
     aa->SetNumTics(numTics);
 
     std::vector<double> ticSizes = getTableRow(1);
