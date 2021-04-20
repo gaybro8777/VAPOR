@@ -49,15 +49,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
 using namespace VAPoR;
 
 namespace {
