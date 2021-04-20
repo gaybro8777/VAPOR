@@ -27,7 +27,7 @@ jobs:
           name: make installer
           command: |
             cd /root/project/build
-            git branch --set-upstream-to=origin/installers installers
+            git branch --set-upstream-to=origin/issue2705_patch issue2705_patch
             git pull
             git checkout issue2705_patch
             git reset --hard origin/issue2705_patch
@@ -54,7 +54,7 @@ jobs:
           name: cmake3 and make
           command: |
             cd /root/project/build
-            git branch --set-upstream-to=origin/installers installers
+            git branch --set-upstream-to=origin/issue2705_patch issue2705_patch
             git pull
             git checkout issue2705_patch
             git reset --hard origin/issue2705_patch
