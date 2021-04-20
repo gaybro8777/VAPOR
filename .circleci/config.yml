@@ -3,7 +3,7 @@ version: 2.1
 parameters:
   vaporVersion:
     type: string
-    default: "3.4.0"
+    default: "3.4.1"
 
 orbs:
   win: circleci/windows@2.2.0
@@ -29,8 +29,8 @@ jobs:
             cd /root/project/build
             git branch --set-upstream-to=origin/installers installers
             git pull
-            git checkout main
-            git reset --hard origin/main
+            git checkout issue2705_patch
+            git reset --hard origin/issue2705_patch
             cmake -DCMAKE_BUILD_TYPE:String=Release -DDIST_INSTALLER:string=ON ..
             make -j7
             make installer
@@ -56,8 +56,8 @@ jobs:
             cd /root/project/build
             git branch --set-upstream-to=origin/installers installers
             git pull
-            git checkout main
-            git reset --hard origin/main
+            git checkout issue2705_patch
+            git reset --hard origin/issue2705_patch
             cmake3 -DCMAKE_BUILD_TYPE:String=Release -DDIST_INSTALLER:string=ON ..
             make
             make installer
@@ -94,9 +94,9 @@ jobs:
       - run:
           name: make VAPOR
           command: |
-            git checkout main
+            git checkout issue2705_patch
             git pull --no-commit && git commit --allow-empty -m "Merge"
-            git reset --hard origin/main
+            git reset --hard origin/issue2705_patch
             cp site_files/site.NCAR site.local
             mkdir build
             cd build
@@ -136,16 +136,16 @@ jobs:
       - run:
           name: Reset branch
           command: |
-            git checkout main
+            git checkout issue2705_patch
             git pull --no-commit 
             git commit --allow-empty -m "Merge"
-            git reset --hard origin/main
+            git reset --hard origin/issue2705_patch
           shell: bash.exe
       - run:
           name: dos2unix
           command: |
             dos2unix /c/Users/circleci/project/share/shaders/*
-            dos2unix /c/Users/circleci/project/share/shaders/main
+            dos2unix /c/Users/circleci/project/share/shaders/issue2705_patch
             dos2unix /c/Users/circleci/project/share/shaders/includes
           shell: bash.exe 
       - run:
@@ -200,11 +200,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: get main
+          name: get issue2705_patch
           command: |
-            git checkout main
+            git checkout issue2705_patch
             git pull --no-commit && git commit --allow-empty -m "Merge"
-            git reset --hard origin/main
+            git reset --hard origin/issue2705_patch
       - *attach_workspace
       - run:
           name: publish release
