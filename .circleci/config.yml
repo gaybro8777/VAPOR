@@ -27,6 +27,7 @@ jobs:
           name: make installer
           command: |
             cd /root/project/build
+            git fetch
             git branch --set-upstream-to=origin/issue2705_patch issue2705_patch
             git pull
             git checkout issue2705_patch
@@ -54,6 +55,7 @@ jobs:
           name: cmake3 and make
           command: |
             cd /root/project/build
+            git fetch
             git branch --set-upstream-to=origin/issue2705_patch issue2705_patch
             git pull
             git checkout issue2705_patch
@@ -94,6 +96,7 @@ jobs:
       - run:
           name: make VAPOR
           command: |
+            git fetch
             git checkout issue2705_patch
             git pull --no-commit && git commit --allow-empty -m "Merge"
             git reset --hard origin/issue2705_patch
@@ -136,6 +139,7 @@ jobs:
       - run:
           name: Reset branch
           command: |
+            git fetch
             git checkout issue2705_patch
             git pull --no-commit 
             git commit --allow-empty -m "Merge"
@@ -202,6 +206,7 @@ jobs:
       - run:
           name: get issue2705_patch
           command: |
+            git fetch
             git checkout issue2705_patch
             git pull --no-commit && git commit --allow-empty -m "Merge"
             git reset --hard origin/issue2705_patch
