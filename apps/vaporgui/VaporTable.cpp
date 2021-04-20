@@ -45,7 +45,6 @@ VaporTable::VaporTable(QTableWidget *table, bool lastRowIsCheckboxes, bool lastC
     SetVerticalHeaderWidth(100);
 
     connect(_table, &QTableWidget::cellClicked, this, &VaporTable::emitCellClicked);
-    // connect(_table, &QTableWidget::cellChanged, this, &VaporTable::emitReturnPressed);
     connect(_table, &QTableWidget::cellChanged, this, &VaporTable::emitValueChanged);
 }
 
@@ -455,6 +454,7 @@ void VaporTable::GetValues(std::vector<double> &vec)
 
 void VaporTable::_correctImmutableCellText()
 {
+    _table->blockSignals(true);
     for (int i = 0; i < _table->rowCount(); i++) {
         if ((i == _activeRow) && (_highlightFlags == ROWS)) { continue; }
         for (int j = 0; j < _table->columnCount(); j++) {
@@ -464,11 +464,13 @@ void VaporTable::_correctImmutableCellText()
             _table->item(i, j)->setBackground(w);
         }
     }
+    _table->blockSignals(false);
 }
 
 void VaporTable::highlightActiveRow(int row)
 {
     if (row < 0) return;
+    _table->blockSignals(true);
 
     for (int i = 0; i < _table->rowCount(); i++) {
         for (int j = 0; j < _table->columnCount(); j++) {
@@ -485,6 +487,7 @@ void VaporTable::highlightActiveRow(int row)
             }
         }
     }
+    _table->blockSignals(false);
 }
 
 int VaporTable::GetActiveRow() const { return _activeRow; }
