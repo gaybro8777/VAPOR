@@ -45,7 +45,7 @@ VaporTable::VaporTable(QTableWidget *table, bool lastRowIsCheckboxes, bool lastC
     SetVerticalHeaderWidth(100);
 
     connect(_table, &QTableWidget::cellClicked, this, &VaporTable::emitCellClicked);
-    //connect(_table, &QTableWidget::cellChanged, this, &VaporTable::emitReturnPressed);
+    // connect(_table, &QTableWidget::cellChanged, this, &VaporTable::emitReturnPressed);
     connect(_table, &QTableWidget::cellChanged, this, &VaporTable::emitValueChanged);
 }
 
