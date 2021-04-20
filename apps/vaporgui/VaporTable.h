@@ -81,21 +81,12 @@ public:
 
     void SetVerticalHeaderWidth(int width);
 
-    // bool event(QEvent* event) override;
-
-protected:
-    bool eventFilter(QObject *obj, QEvent *event) override;
-    // void keyPressEvent(QKeyEvent* event);
-    // void mousePressEvent( QMouseEvent* event) override;
-
 public slots:
     void emitCellClicked(int, int);
     void emitValueChanged(int row = 0, int col = 0);
     void emitReturnPressed();
-    void printCurrentValue(int row, int col);
 
 signals:
-
     void valueChanged(int row, int col);
     void cellClicked(int row, int col);
     void returnPressed();
