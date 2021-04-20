@@ -255,12 +255,12 @@ void VaporTable::addCheckbox(int row, int column, bool checked)
 
 void VaporTable::emitValueChanged(int row, int col)
 {
-    //int        row, col;
+    // int        row, col;
     QCheckBox *item = qobject_cast<QCheckBox *>(QObject::sender());
     if (item != nullptr) {
         row = item->property("row").toInt();
         col = item->property("col").toInt();
-    } //else {
+    }    // else {
     //    return;
     //}
 
@@ -270,7 +270,11 @@ void VaporTable::emitValueChanged(int row, int col)
     emit valueChanged(row, col);
 }
 
-void VaporTable::emitReturnPressed() { std::cout << "FOO" << std::endl; emit returnPressed(); }
+void VaporTable::emitReturnPressed()
+{
+    std::cout << "FOO" << std::endl;
+    emit returnPressed();
+}
 
 void VaporTable::emitCellClicked(int row, int col)
 {
@@ -496,13 +500,14 @@ int VaporTable::GetActiveRow() const { return _activeRow; }
 
 void VaporTable::SetActiveRow(int row) { _activeRow = row; }
 
-void VaporTable::printCurrentValue(int row, int col) {
+void VaporTable::printCurrentValue(int row, int col)
+{
     std::cout << "printCurrentValue()" << std::endl;
-    std::cout << _table->item(row,col)->text().toStdString() << std::endl;
+    std::cout << _table->item(row, col)->text().toStdString() << std::endl;
     emit emitReturnPressed();
 }
 
-//bool VaporTable::event( QEvent* event ) {
+// bool VaporTable::event( QEvent* event ) {
 /*void VaporTable::keyPressEvent( QKeyEvent* event ) {
     std::cout << "Foo" << std::endl;
     if (event->type() == QEvent::KeyPress) {
@@ -522,15 +527,15 @@ void VaporTable::printCurrentValue(int row, int col) {
     setFocus();
 }*/
 
-//bool ReturnPressWatcher::eventFilter(QObject* obj, QEvent* event) {
-bool VaporTable::eventFilter(QObject* obj, QEvent* event) {
+// bool ReturnPressWatcher::eventFilter(QObject* obj, QEvent* event) {
+bool VaporTable::eventFilter(QObject *obj, QEvent *event)
+{
     return QObject::eventFilter(obj, event);
     if (event->type() == QEvent::KeyPress) {
-        auto key = static_cast<QKeyEvent*>(event)->key();
-        if (key == Qt::Key_Return || key == Qt::Key_Enter ) {
-            
+        auto key = static_cast<QKeyEvent *>(event)->key();
+        if (key == Qt::Key_Return || key == Qt::Key_Enter) {
             emit emitReturnPressed();
-            //return true;
+            // return true;
         }
     }
     return QObject::eventFilter(obj, event);
