@@ -27,9 +27,13 @@ jobs:
           name: make installer
           command: |
             cd /root/project/build
-            git branch --set-upstream-to=origin/main main
-            git pull
+            #git branch --set-upstream-to=origin/main main
+            #git pull
+            #git checkout issue2705_patch
+            #git reset --hard origin/issue2705_patch
+            git fetch
             git checkout issue2705_patch
+            git pull --no-commit && git commit --allow-empty -m "Merge"
             git reset --hard origin/issue2705_patch
             cmake -DCMAKE_BUILD_TYPE:String=Release -DDIST_INSTALLER:string=ON ..
             make -j7
@@ -54,9 +58,13 @@ jobs:
           name: cmake3 and make
           command: |
             cd /root/project/build
-            git branch --set-upstream-to=origin/main main
-            git pull
+            #git branch --set-upstream-to=origin/main main
+            #git pull
+            #git checkout issue2705_patch
+            #git reset --hard origin/issue2705_patch
+            git fetch
             git checkout issue2705_patch
+            git pull --no-commit && git commit --allow-empty -m "Merge"
             git reset --hard origin/issue2705_patch
             cmake3 -DCMAKE_BUILD_TYPE:String=Release -DDIST_INSTALLER:string=ON ..
             make
