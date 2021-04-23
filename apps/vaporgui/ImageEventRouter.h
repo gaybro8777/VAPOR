@@ -37,6 +37,6 @@ protected:
     string _getSmallIconImagePath() const { return "Image_small.png"; }
     string _getIconImagePath() const { return "Image.png"; }
 
-//private:
-    //NewImageDialog* _newImageDialog;
+    // private:
+    // NewImageDialog* _newImageDialog;
 };
