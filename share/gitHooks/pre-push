@@ -15,7 +15,7 @@ else
         if [ "$COMMIT" = "+" ]; then
             :
         else
-            echo "Commit: $COMMIT"
+            echo "Reading Commit: $COMMIT"
             for FILE in $(git diff-tree --no-commit-id --name-only -r $COMMIT |grep -E "\.h|\.cpp"); do
                 NUMBERS=""
                 for NUMBER in $(git blame --line-porcelain "$FILE" | egrep ^$COMMIT | cut -d' ' -f3); do
