@@ -408,17 +408,6 @@ std::vector<double> AnnotationEventRouter::getDomainExtents() const
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 void AnnotationEventRouter::axisAnnotationTableChanged()
 {
     AxisAnnotation *aa = _getCurrentAxisAnnotation();
