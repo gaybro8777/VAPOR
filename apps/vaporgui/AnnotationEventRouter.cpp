@@ -35,6 +35,23 @@
 #include "qcolordialog.h"
 #include <qlabel.h>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #include <vector>
 #include <string>
 #include <iostream>
