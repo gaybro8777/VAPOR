@@ -86,13 +86,9 @@ jobs:
           name: run clang-format
           command: |
             cd /root/project
-            for COMMIT in $(git log --pretty=format:%h main...$BRANCH); do
-                for FILE in $(git diff --name-only $COMMIT^ $COMMIT |grep -E "\.h|\.cpp"); do
-                    if test -f "$FILE"; then
-                        echo "  Running clang-format on $FILE"
-                        clang-format-11 --dry-run $FILE >> /tmp/clang-format.txt 2>&1
-                    fi
-                done
+            for FILE in $(git diff --name-only $BRANCH $(git merge-base $BRANCH main)); do
+                echo "  Running clang-format on $FILE"
+                clang-format-11 --dry-run $FILE >> /tmp/clang-format.txt 2>&1
             done
             exit 0
 
