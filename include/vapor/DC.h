@@ -389,15 +389,8 @@ public:
         //! \param[in] layers_dim_name Name of dimension specifying the number
         //! of layers in the mesh.
         //
-        Mesh(
-          std::string name,
-          int max_nodes_per_face,
-          int max_faces_per_node,
-          std::string node_dim_name,
-          std::string face_dim_name,
-          std::vector <string> coord_vars
-        );
-        
+        Mesh(std::string name, int max_nodes_per_face, int max_faces_per_node, std::string node_dim_name, std::string face_dim_name, std::vector<string> coord_vars);
+
         //! Return the type of mesh
         //!
         //! Returns one of:
