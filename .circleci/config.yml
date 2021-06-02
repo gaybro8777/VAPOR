@@ -86,7 +86,7 @@ jobs:
           name: run clang-format
           command: |
             cd /root/project
-            for FILE in $(git diff --name-only "$BRANCH" $(git merge-base "$BRANCH" main)); do
+            for FILE in $(git diff --name-only "$CIRCLE_BRANCH" $(git merge-base "$CIRCLE_BRANCH" main)); do
                 echo "  Running clang-format on $FILE"
                 clang-format-11 --dry-run $FILE >> /tmp/clang-format.txt 2>&1
             done
