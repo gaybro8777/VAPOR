@@ -306,7 +306,15 @@ template<class T> int DCBOV::_readRegionTemplate(int fd, const vector<size_t> &m
         if (varname == spatialDims[dim]) {
             double increment = brickSize[dim] / (dataSize[dim] - 1);
             for (int i = 0; i < dataSize[dim]; i++) { region[i] = origin[dim] + i * increment; }
+            return 0;
         }
+    }
+
+    // else if (varname == _bovCollection->GetTimeDimension()) {
+    if (varname == _bovCollection->GetTimeDimension()) {
+        std::vector<float> times = _bovCollection->GetUserTimes();
+        for (int i = 0; i < times.size(); i++) region[i] = (float)times[i];
+        return 0;
     }
 
     // If a data variable is requested, read it with ReadRegion
@@ -319,10 +327,10 @@ template<class T> int DCBOV::_readRegionTemplate(int fd, const vector<size_t> &m
         }
     }
     // Otherwise return time values
-    else if (varname == _bovCollection->GetTimeDimension()) {
+    /*else if (varname == _bovCollection->GetTimeDimension()) {
         std::vector<float> times = _bovCollection->GetUserTimes();
         for (int i = 0; i < times.size(); i++) region[i] = (float)times[i];
-    }
+    }*/
     return 0;
 }
 
