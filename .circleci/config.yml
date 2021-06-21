@@ -31,7 +31,7 @@ jobs:
             cmake -DBUILD_TEST_APPS=ON ..
             make -j7 2>&1 | tee /tmp/debugOutput.txt
             make clean
-            cmake -DBUILD_TEST_APPS=ON -DCMAKE_BUILD_TYPE=Release ..
+            cmake -DOPEN_MP=ON -DBUILD_TEST_APPS=ON -DCMAKE_BUILD_TYPE=Release ..
             make -j7 2>&1 | tee /tmp/releaseOutput.txt
 
       - store_artifacts:
@@ -173,7 +173,7 @@ jobs:
             cmake3 -DBUILD_TEST_APPS=ON ..
             make -j7 2>&1 | tee /tmp/debugOutput.txt
             make clean
-            cmake -DBUILD_TEST_APPS=ON -DCMAKE_BUILD_TYPE=Release ..
+            cmake -DBUILD_OMP=ON -DBUILD_TEST_APPS=ON -DCMAKE_BUILD_TYPE=Release ..
             make -j7 2>&1 | tee /tmp/releaseOutput.txt
 
       - store_artifacts:
