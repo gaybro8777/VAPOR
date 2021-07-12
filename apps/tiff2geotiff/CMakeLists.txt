@@ -6,8 +6,10 @@ else ()
 	target_link_libraries (tiff2geotiff tiff geotiff proj common)
 endif()
 
-OpenMPInstall (
-	TARGETS tiff2geotiff
-	DESTINATION ${INSTALL_BIN_DIR}
-	COMPONENT Utilites
-	)
+if(NOT WIN32)
+	OpenMPInstall (
+		TARGETS tiff2geotiff
+		DESTINATION ${INSTALL_BIN_DIR}
+		COMPONENT Utilites
+		)
+endif()

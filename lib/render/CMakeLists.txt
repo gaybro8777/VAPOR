@@ -148,11 +148,13 @@ endif()
 
 add_definitions (-DRENDER_EXPORTS)
 
-OpenMPInstall (
-	TARGETS render
-	DESTINATION ${INSTALL_LIB_DIR}
-	COMPONENT Libraries
-	)
+if(NOT WIN32)
+	OpenMPInstall (
+		TARGETS render
+		DESTINATION ${INSTALL_LIB_DIR}
+		COMPONENT Libraries
+		)
+endif()
 
 install (
 	FILES ${HEADERS}

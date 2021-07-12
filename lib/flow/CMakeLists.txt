@@ -20,11 +20,13 @@ target_link_libraries ( flow  PUBLIC vdc params )
 
 add_definitions (-DFLOW_EXPORTS)
 
-OpenMPInstall (
-	TARGETS flow
-	DESTINATION ${INSTALL_LIB_DIR}
-	COMPONENT Libraries
-	)
+if(NOT WIN32)
+	OpenMPInstall (
+		TARGETS flow
+		DESTINATION ${INSTALL_LIB_DIR}
+		COMPONENT Libraries
+		)
+endif()
 
 install (
 	FILES ${HEADERS}

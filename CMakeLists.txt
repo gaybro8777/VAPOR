@@ -9,7 +9,10 @@ project (VAPOR3)
 
 include (buildutils/UtilityFunctions.cmake)
 include (buildutils/GetGitRevisionDescription.cmake)
-include (buildutils/OpenMPInstaller.cmake)
+
+if(NOT WIN32)
+	include (buildutils/OpenMPInstaller.cmake)
+endif()
 
 set (CMAKE_CXX_STANDARD 11)
 

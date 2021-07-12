@@ -77,11 +77,13 @@ target_link_libraries (params PUBLIC vdc expat)
 
 add_definitions (-DPARAMS_EXPORTS)
 
-OpenMPInstall (
-	TARGETS params
-	DESTINATION ${INSTALL_LIB_DIR}
-	COMPONENT Libraries
-	)
+if(NOT WIN32)
+	OpenMPInstall (
+		TARGETS params
+		DESTINATION ${INSTALL_LIB_DIR}
+		COMPONENT Libraries
+		)
+endif()
 
 install (
 	FILES ${HEADERS}
