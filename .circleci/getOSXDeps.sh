@@ -21,4 +21,4 @@ make
 sudo make install
 sudo /opt/local/bin/port selfupdate
 (sudo yes || true) | sudo /opt/local/bin/port install clang-12
-sudo /opt/local/bin/port select -—set clang mp-clang-12
+sudo /opt/local/bin/port select --set clang mp-clang-12
