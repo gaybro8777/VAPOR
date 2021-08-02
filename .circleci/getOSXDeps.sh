@@ -20,4 +20,4 @@ cd MacPorts-2.7.1/
 make
 sudo make install
 sudo /opt/local/bin/port selfupdate
-sudo (yes || true) | sudo /opt/local/bin/port install llvm-12
+(sudo yes || true) | sudo /opt/local/bin/port install llvm-12
